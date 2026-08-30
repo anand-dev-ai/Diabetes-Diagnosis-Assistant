@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Diabetes Diagnosis Assistant</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🩺 Diabetes Diagnosis Assistant</h1>
+    <p class="subtitle">Enter patient details to check diabetes risk</p>
+
+    <form id="patient-form">
+      <div class="form-group">
+        <label>Pregnancies</label>
+        <input type="number" id="pregnancies" min="0" max="20" required>
+      </div>
+      <div class="form-group">
+        <label>Glucose</label>
+        <input type="number" id="glucose" min="0" max="200" required>
+      </div>
+      <div class="form-group">
+        <label>Blood Pressure</label>
+        <input type="number" id="blood_pressure" min="0" max="150" required>
+      </div>
+      <div class="form-group">
+        <label>Skin Thickness</label>
+        <input type="number" id="skin_thickness" min="0" max="100" required>
+      </div>
+      <div class="form-group">
+        <label>Insulin</label>
+        <input type="number" id="insulin" min="0" max="900" required>
+      </div>
+      <div class="form-group">
+        <label>BMI</label>
+        <input type="number" id="bmi" min="0" max="70" step="0.1" required>
+      </div>
+      <div class="form-group">
+        <label>Diabetes Pedigree Function</label>
+        <input type="number" id="dpf" min="0" max="3" step="0.01" required>
+      </div>
+      <div class="form-group">
+        <label>Age</label>
+        <input type="number" id="age" min="1" max="120" required>
+      </div>
+
+      <button type="submit" class="btn">Predict</button>
+    </form>
+
+    <div id="result"></div>
+  </div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
