@@ -6,6 +6,5 @@ fastapi
 scikit-learn
 joblib
 streamlit
-sklearn
 xgboost
 uvicorn
