@@ -5,25 +5,24 @@ from fastapi.staticfiles import StaticFiles
 import joblib
 import numpy as np
 
-# Load best model
+# Load model
 model = joblib.load("models/best_model.pkl")
 
-# Initialize FastAPI app
 app = FastAPI(title="Diabetes Diagnosis Assistant")
 
-# Enable CORS (for frontend JS fetch requests)
+# Enable CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # allow all origins during development
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Serve static files (CSS, JS)
+# Serve static files
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
-# Serve index.html at root
+# Serve index.html
 @app.get("/")
 def read_root():
     return FileResponse("frontend/index.html")
@@ -46,6 +45,7 @@ def predict_diabetes(data: dict):
     probability = model.predict_proba(input_data)[0][1]
 
     return {
-        "prediction": int(prediction),
-        "probability": round(probability, 3)
+        "prediction": int(prediction),       # ✅ convert to Python int
+        "probability": round(float(probability), 3)  # ✅ convert to Python float
     }
+

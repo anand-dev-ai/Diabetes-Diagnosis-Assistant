@@ -1,4 +1,5 @@
-// Handle form submission
+const API_URL = "http://127.0.0.1:8000/predict";
+
 document.getElementById("patient-form").addEventListener("submit", async function(e) {
   e.preventDefault();
 
@@ -14,29 +15,31 @@ document.getElementById("patient-form").addEventListener("submit", async functio
   };
 
   try {
-    const response = await fetch("https://diabetes-assistant.onrender.com/predict", {
+    const response = await fetch(API_URL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
     });
 
-    if (!response.ok) {
-      throw new Error("Server error: " + response.status);
-    }
+    if (!response.ok) throw new Error("Server error: " + response.status);
 
     const result = await response.json();
+
     document.getElementById("result").innerHTML =
       result.prediction === 1
         ? `<span style="color:red;">⚠️ Patient likely diabetic (Probability: ${result.probability})</span>`
         : `<span style="color:green;">✅ Patient not diabetic (Probability: ${result.probability})</span>`;
+
+    // Progress bar fill
+    const probabilityPercent = Math.round(result.probability * 100);
+    document.getElementById("progress-fill").style.width = probabilityPercent + "%";
+
   } catch (error) {
-    console.error("Error:", error);
     document.getElementById("result").innerHTML =
-      `<span style="color:orange;">❌ Something went wrong: ${error.message}</span>`;
+      `<span style="color:orange;">❌ Error: ${error.message}</span>`;
   }
 });
 
-// Generate random patient data for demo
 document.getElementById("generate-sample").addEventListener("click", function() {
   const sample = {
     Pregnancies: Math.floor(Math.random() * 6),
@@ -49,7 +52,6 @@ document.getElementById("generate-sample").addEventListener("click", function() 
     Age: Math.floor(Math.random() * (65 - 20) + 20)
   };
 
-  // Autofill form fields
   document.getElementById("pregnancies").value = sample.Pregnancies;
   document.getElementById("glucose").value = sample.Glucose;
   document.getElementById("blood_pressure").value = sample.BloodPressure;
@@ -61,4 +63,5 @@ document.getElementById("generate-sample").addEventListener("click", function() 
 
   document.getElementById("result").innerHTML =
     `<span style="color:blue;">ℹ️ Sample patient data generated. Click Predict to test.</span>`;
+  document.getElementById("progress-fill").style.width = "0%";
 });
