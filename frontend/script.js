@@ -1,3 +1,4 @@
+// Handle form submission
 document.getElementById("patient-form").addEventListener("submit", async function(e) {
   e.preventDefault();
 
@@ -12,15 +13,52 @@ document.getElementById("patient-form").addEventListener("submit", async functio
     Age: parseInt(document.getElementById("age").value)
   };
 
-  const response = await fetch("http://127.0.0.1:8000/predict", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
+  try {
+    const response = await fetch("https://diabetes-assistant.onrender.com/predict", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
 
-  const result = await response.json();
+    if (!response.ok) {
+      throw new Error("Server error: " + response.status);
+    }
+
+    const result = await response.json();
+    document.getElementById("result").innerHTML =
+      result.prediction === 1
+        ? `<span style="color:red;">⚠️ Patient likely diabetic (Probability: ${result.probability})</span>`
+        : `<span style="color:green;">✅ Patient not diabetic (Probability: ${result.probability})</span>`;
+  } catch (error) {
+    console.error("Error:", error);
+    document.getElementById("result").innerHTML =
+      `<span style="color:orange;">❌ Something went wrong: ${error.message}</span>`;
+  }
+});
+
+// Generate random patient data for demo
+document.getElementById("generate-sample").addEventListener("click", function() {
+  const sample = {
+    Pregnancies: Math.floor(Math.random() * 6),
+    Glucose: Math.floor(Math.random() * (180 - 80) + 80),
+    BloodPressure: Math.floor(Math.random() * (90 - 60) + 60),
+    SkinThickness: Math.floor(Math.random() * (40 - 15) + 15),
+    Insulin: Math.floor(Math.random() * (200 - 50) + 50),
+    BMI: (Math.random() * (35 - 18) + 18).toFixed(1),
+    DiabetesPedigreeFunction: (Math.random() * 1).toFixed(2),
+    Age: Math.floor(Math.random() * (65 - 20) + 20)
+  };
+
+  // Autofill form fields
+  document.getElementById("pregnancies").value = sample.Pregnancies;
+  document.getElementById("glucose").value = sample.Glucose;
+  document.getElementById("blood_pressure").value = sample.BloodPressure;
+  document.getElementById("skin_thickness").value = sample.SkinThickness;
+  document.getElementById("insulin").value = sample.Insulin;
+  document.getElementById("bmi").value = sample.BMI;
+  document.getElementById("dpf").value = sample.DiabetesPedigreeFunction;
+  document.getElementById("age").value = sample.Age;
+
   document.getElementById("result").innerHTML =
-    result.prediction === 1
-      ? `<span style="color:red;">⚠️ Patient likely diabetic (Probability: ${result.probability})</span>`
-      : `<span style="color:green;">✅ Patient not diabetic (Probability: ${result.probability})</span>`;
+    `<span style="color:blue;">ℹ️ Sample patient data generated. Click Predict to test.</span>`;
 });
