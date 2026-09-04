@@ -10,27 +10,42 @@ model = joblib.load("models/best_model.pkl")
 
 app = FastAPI(title="Diabetes Diagnosis Assistant")
 
-# Enable CORS (must include OPTIONS preflight)
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://diabetes-diagnosis-assistant.onrender.com",  # frontend domain
-        "http://localhost:5500"  # optional: for local testing
+        "https://diabetes-diagnosis-assistant.onrender.com",
+        "http://localhost:5500",
     ],
     allow_credentials=True,
-    allow_methods=["*"],   # includes OPTIONS
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Serve static files
-app.mount("/static", StaticFiles(directory="frontend"), name="static")
+# Static files
+app.mount(
+    "/static",
+    StaticFiles(directory="frontend"),
+    name="static"
+)
 
+# Health check
+@app.get("/health")
+def health():
+    return {
+        "status": "healthy",
+        "message": "Diabetes Assistant API is running"
+    }
+
+# Home page
 @app.get("/")
 def read_root():
     return FileResponse("frontend/index.html")
 
+# Prediction
 @app.post("/predict")
 def predict_diabetes(data: dict):
+
     input_data = np.array([[
         data["Pregnancies"],
         data["Glucose"],
