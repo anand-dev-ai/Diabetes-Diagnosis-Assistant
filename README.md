@@ -1,67 +1,228 @@
-# 🩺 Diabetes Diagnosis Assistant
+🩺 Diabetes Diagnosis Assistant
 
-A machine learning project that predicts the likelihood of diabetes using patient health data.  
-Built with **Logistic Regression, Random Forest, and XGBoost**, deployed via **FastAPI** and a custom **HTML/CSS/JS frontend**.
+A machine learning web application that predicts the likelihood of diabetes from patient health measurements.
 
----
+The project compares multiple machine learning algorithms, automatically selects the best-performing model, and serves predictions through a FastAPI backend with a responsive HTML/CSS/JavaScript frontend.
 
-## 📂 Project Structure
+⚠️ Disclaimer: This project is intended for educational and demonstration purposes only. It is not a medical diagnostic tool and should not be used as a substitute for professional medical advice.
 
-data/diabetes.csv          # Dataset
-notebooks/eda.ipynb        # Exploratory Data Analysis
-src/train_model.py         # Model training & evaluation
-src/main.py                # FastAPI backend + frontend serving
-models/best_model.pkl      # Best model saved for deployment
-frontend/index.html        # Web UI
-frontend/style.css         # Styling
-frontend/script.js         # JS logic
-requirements.txt           # Dependencies
-README.md                  # Documentation
+🌐 Live Demo
 
-Code
+Try the application:
+https://diabetes-assistant.onrender.com
 
----
+✨ Features
+🧹 Data preprocessing and exploratory data analysis
+📊 Exploratory Data Analysis (EDA)
+🤖 Multiple machine learning models:
+Logistic Regression
+Random Forest
+XGBoost
+🏆 Automatic model comparison and best-model selection
+💾 Best-performing model saved using Joblib
+⚡ FastAPI REST API for real-time predictions
+🎨 Custom HTML/CSS/JavaScript frontend
+📈 Diabetes probability visualization
+✅ Client-side form validation
+📱 Responsive interface for desktop and mobile
+☁️ Deployed on Render
+🧠 Machine Learning Workflow
 
-## 🚀 Features
-- Cleaned dataset with EDA.
-- Baseline (Logistic Regression) + advanced models (Random Forest, XGBoost).
-- Automatic model comparison and best model selection.
-- FastAPI backend serving predictions.
-- Professional HTML/CSS/JS frontend with validation and probability bar.
+The project follows this workflow:
 
----
+Patient Health Data
+        ↓
+Data Cleaning & Preprocessing
+        ↓
+Exploratory Data Analysis
+        ↓
+Train Multiple Models
+        ↓
+Evaluate Model Performance
+        ↓
+Select Best Model
+        ↓
+Save best_model.pkl
+        ↓
+FastAPI Prediction API
+        ↓
+Web Frontend
+        ↓
+Prediction + Probability
 
-## ⚙️ Installation
+📂 Project Structure
+Diabetes-Diagnosis-Assistant/
+│
+├── data/
+│   └── diabetes.csv
+│
+├── notebooks/
+│   └── eda.ipynb
+│
+├── models/
+│   └── best_model.pkl
+│
+├── src/
+│   ├── train_model.py
+│   └── main.py
+│
+├── frontend/
+│   ├── index.html
+│   ├── style.css
+│   └── script.js
+│
+├── requirements.txt
+└── README.md
 
-```bash
+🛠️ Tech Stack
+Machine Learning
+Python
+Pandas
+NumPy
+Scikit-learn
+XGBoost
+Joblib
+Backend
+FastAPI
+Uvicorn
+Frontend
+HTML5
+CSS3
+JavaScript
+Deployment
+Render
+📊 Models
+
+Three classification algorithms are evaluated:
+
+Model	Purpose
+Logistic Regression	Baseline classification model
+Random Forest	Ensemble learning approach
+XGBoost	Gradient boosting approach
+
+The training pipeline evaluates the models and saves the selected best-performing model as:
+
+models/best_model.pkl
+
+⚙️ Installation
+1. Clone the repository
 git clone https://github.com/anand-dev-ai/Diabetes-Diagnosis-Assistant.git
+
+2. Enter the project directory
 cd Diabetes-Diagnosis-Assistant
+
+3. Install dependencies
 pip install -r requirements.txt
-📊 Training Models
-bash
+
+🧪 Train the Models
+
+Run:
+
 python src/train_model.py
-This will:
 
-Train models and evaluate metrics.
 
-Save all models in models/.
+The training process:
 
-Auto‑select best model (best_model.pkl).
+Loads the diabetes dataset.
+Preprocesses the data.
+Trains multiple classification models.
+Evaluates model performance.
+Compares the models.
+Selects the best-performing model.
+Saves the model to:
+models/best_model.pkl
 
-🌐 Run FastAPI + Frontend
-bash
+🚀 Run the Application Locally
+
+Start the FastAPI server:
+
 uvicorn src.main:app --reload
-Open in browser:
 
-Code
+
+Open the application in your browser:
+
 http://127.0.0.1:8000/
-Fill out patient details in the form → get prediction + probability bar.
 
-📦 Requirements
-Python 3.9+
 
-pandas, numpy, scikit-learn, xgboost
+Enter the patient's health information and click Predict to receive a prediction and probability score.
 
-fastapi, uvicorn
+🔌 API
+Prediction Endpoint
+POST /predict
 
-joblib
+Input
+
+The API expects JSON containing:
+
+{
+  "Pregnancies": 2,
+  "Glucose": 120,
+  "BloodPressure": 70,
+  "SkinThickness": 20,
+  "Insulin": 79,
+  "BMI": 25.0,
+  "DiabetesPedigreeFunction": 0.5,
+  "Age": 35
+}
+
+Response
+{
+  "prediction": 0,
+  "probability": 0.123
+}
+
+
+Where:
+
+prediction: 0 → model predicts a negative class
+prediction: 1 → model predicts a positive class
+probability → model's estimated probability for the positive class
+❤️ Health Check
+
+The backend provides a health-check endpoint:
+
+GET /health
+
+
+Example response:
+
+{
+  "status": "healthy",
+  "message": "Diabetes Assistant API is running"
+}
+
+🔒 Important Limitations
+
+Machine learning predictions depend on the quality and characteristics of the training data.
+
+This application:
+
+Does not replace a doctor or healthcare professional.
+Should not be used to make medical decisions.
+May produce incorrect predictions.
+Provides model-based estimates rather than confirmed diagnoses.
+🚧 Future Improvements
+
+Possible future improvements include:
+
+Add authentication and API rate limiting
+Improve input validation
+Add model performance visualizations
+Add confusion matrix and ROC-AUC analysis
+Add automated testing
+Add CI/CD
+Improve accessibility
+Add prediction history
+Improve API documentation
+Add Docker support
+Monitor model performance after deployment
+👨‍💻 Author
+
+Anand Samadhiya
+
+GitHub:
+https://github.com/anand-dev-ai
+
+⭐ Support
+
+If you found this project useful or interesting, consider giving the repository a ⭐ on GitHub.
