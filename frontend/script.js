@@ -1,4 +1,5 @@
-const API_URL = "http://127.0.0.1:8000/predict";
+// ===== CONFIG =====
+const API_URL = "https://diabetes-assistant.onrender.com/predict";
 
 document.getElementById("patient-form").addEventListener("submit", async function(e) {
   e.preventDefault();
